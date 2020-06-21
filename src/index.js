@@ -7,5 +7,8 @@ function add(x, y) {
 import './index.css'
 import './index.less'
 import data from './data.json'
+// font
+
+import './font/iconfont.css'
 console.log(add(1, 2))
 console.log(data)

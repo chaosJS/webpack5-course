@@ -33,7 +33,6 @@ module.exports = {
           // 报错的话，可以关闭url-loader的es6 模块化
           // esModule: false
 
-
           // 重命名
           name: '[hash:10].[ext]'
         }
@@ -42,6 +41,11 @@ module.exports = {
         // html文件中的img标签路径
         test: /\.html$/,
         loader: 'html-loader'
+      },
+      // font loader
+      {
+        test: /\.(woff|svg|eot|ttf)$/,
+        loader: 'url-loader'
       }
     ]
   },
