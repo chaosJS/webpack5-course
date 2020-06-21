@@ -56,5 +56,16 @@ module.exports = {
   ],
 
   // mode: 'development|production'
-  mode: 'development'
+  mode: 'development',
+
+  // npm i webpack-dev-server
+  // 运行webpack-dev-server
+  devServer: {
+    // 只在内存中打包运行
+    contentBase: path.resolve(__dirname, 'build'),
+    // gzip
+    compress: true,
+    port: 3000,
+    open: true
+  }
 }
