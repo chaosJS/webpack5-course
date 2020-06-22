@@ -1,7 +1,7 @@
 const path = require('path')
 const htmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/js/index.js',
   output: {
     filename: 'build.js',
     // __dirname 当前文件的目录绝对路径
@@ -34,7 +34,8 @@ module.exports = {
           // esModule: false
 
           // 重命名
-          name: '[hash:10].[ext]'
+          name: '[hash:10].[ext]',
+          outputPath: 'images'
         }
       },
       {
@@ -45,7 +46,10 @@ module.exports = {
       // font loader
       {
         test: /\.(woff|svg|eot|ttf)$/,
-        loader: 'url-loader'
+        loader: 'url-loader',
+        options: {
+          outputPath: 'fonts'
+        }
       }
     ]
   },

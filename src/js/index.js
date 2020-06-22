@@ -4,11 +4,11 @@
 function add(x, y) {
   return x + y
 }
-import './index.css'
-import './index.less'
-import data from './data.json'
+import '../styles/index.css'
+import '../styles/index.less'
+import data from '../data.json'
 // font
 
-import './font/iconfont.css'
+import '../font/iconfont.css'
 console.log(add(1, 2))
 console.log(data)
