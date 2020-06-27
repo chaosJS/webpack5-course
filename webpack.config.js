@@ -1,5 +1,9 @@
 const path = require('path')
 const htmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+// 切换NODE_ENV 可以看到不同的css兼容效果
+// process.env.NODE_ENV = 'development'
 module.exports = {
   entry: './src/js/index.js',
   output: {
@@ -13,14 +17,60 @@ module.exports = {
         test: /\.css$/,
         use: [
           // 将js中的css资源（字符串）提取出来，放到style标签中，添加到head中
-          'style-loader',
+          // 'style-loader',
+          // 取代 style-loader,提取css为单独的文件
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              // 这里可以指定一个 publicPath
+              // 默认使用 webpackOptions.output中的publicPath
+              // publicPath的配置，和plugins中设置的filename和chunkFilename的名字有关
+              // 如果打包后，background属性中的图片显示不出来，请检查publicPath的配置是否有误
+              publicPath: '/'
+              // publicPath: devMode ? './' : '../',   // 根据不同环境指定不同的publicPath
+              // 仅dev环境启用HMR功能
+              // hmr: devMode
+            }
+          },
           // 将css文件转变成commonjs模块加载到js中，样式字符串
-          'css-loader'
+          'css-loader',
+          // css-loader 之前添加postcss-loader
+          {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: () => [
+                // 帮助postcss找到package.json中 browserslist 的配置，通过这个配置，加载指定的css兼容性样式
+                require('postcss-preset-env')()
+              ]
+            }
+          }
         ]
       },
       {
         test: /\.less$/,
-        use: ['style-loader', 'css-loader', 'less-loader']
+        // test: /\.(css|less)$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              // 这里可以指定一个 publicPath
+              // 默认使用 webpackOptions.output中的publicPath
+              // publicPath的配置，和plugins中设置的filename和chunkFilename的名字有关
+              // 如果打包后，background属性中的图片显示不出来，请检查publicPath的配置是否有误
+              publicPath: '/'
+              // publicPath: devMode ? './' : '../',   // 根据不同环境指定不同的publicPath
+              // 仅dev环境启用HMR功能
+              // hmr: devMode
+            }
+          },
+          'css-loader',
+          //
+          // {
+          //   loader: 'postcss-loader'
+          // },
+          'less-loader'
+        ]
       },
       {
         test: /\.jpeg|jpg|png$/,
@@ -50,13 +100,74 @@ module.exports = {
         options: {
           outputPath: 'fonts'
         }
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              // 预设 指示babel做什么样的兼容性处理
+              presets: [
+                // 基本的js兼容性处理 promise 之类的就不能转化了
+                // '@babel/preset-env',
+                // @babel/polyfill  全部js兼容处理 直接在文件中引入
+                // 按需加载兼容
+                [
+                  '@babel/preset-env',
+                  {
+                    // 按需加载
+                    useBuiltIns: 'usage',
+                    // 指定corejs 版本
+                    corejs: {
+                      version: 3
+                    },
+                    // 指定兼容到哪个版本的浏览器
+                    targets: {
+                      chrome: '60',
+                      firefox: '60',
+                      ie: '9',
+                      safari: '10',
+                      edge: '17'
+                    }
+                  }
+                ]
+              ]
+            }
+          },
+          // 此处注意⚠️两个loader的顺序：一定要放在最后，也就是先检查修复，再babel/corejs兼容
+          {
+            // eslint
+            loader: 'eslint-loader',
+            // 自动修复不符合规范的js代码
+            options: {
+              fix: true
+            }
+          }
+        ]
       }
     ]
   },
   plugins: [
     // 处理html: html-webpack-plugin 默认创建html文件，引入打包输出的所有资源
     // 传入配置，可以指定template文件
-    new htmlWebpackPlugin({ template: './src/index.template.html' })
+    new htmlWebpackPlugin({
+      template: './src/index.template.html',
+      // 默认压缩
+      // minify: 'auto',
+      // 自定义压缩
+      minify: {
+        collapseWhitespace: true,
+        removeComments: true
+      }
+    }),
+
+    new MiniCssExtractPlugin({
+      // 对输出对文件重新命名，默认为main.css
+      filename: 'css/built.css'
+    }),
+    new OptimizeCssAssetsPlugin()
   ],
 
   // mode: 'development|production'
