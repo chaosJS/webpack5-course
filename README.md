@@ -1,6 +1,6 @@
 ### 最新版 Webpack5
 
-todo: https://www.bilibili.com/video/BV1e7411j7T5?p=19
+todo: https://www.bilibili.com/video/BV1e7411j7T5?p=21
 
 - 提取 css 成为单独文件
 
@@ -33,6 +33,11 @@ todo: https://www.bilibili.com/video/BV1e7411j7T5?p=19
 1. 压缩 js，把 webpack 的 mode 改为 production 就行，webpack 自动调用 uglifyJsPlugin 的插件
 2. 压缩 html 修改 htmlWebpackPlugin 的配置
 
-- 生产环境的配置
-
-1.
+- 性能优化配置
+  - 开发环境优化
+    1. 打包速度
+       1. hmr 只打包变化的模块
+    1. 优化代码调试（sourve map）
+  - 生产环境优化
+    1. 打包速度
+    2. 代码运行的性能

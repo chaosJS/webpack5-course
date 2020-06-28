@@ -5,6 +5,12 @@ import '../styles/index.less';
 import data from '../data.json'; // font
 
 import '../font/iconfont.css';
+
+import print from './print';
+
+console.log('index.js 被加载了');
+
+print();
 // 暴力全部引入
 // import '@babel/polyfill'
 function add(x, y) {
@@ -39,3 +45,9 @@ console.log(add(1, 2));
 console.log(minus(2, 1));
 
 console.log(data);
+
+if (module.hot) {
+  module.hot.accept('./print.js', () => {
+    print();
+  });
+}

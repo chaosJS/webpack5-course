@@ -181,6 +181,8 @@ module.exports = {
     // gzip
     compress: true,
     port: 3000,
+    // hmr
+    hot: true,
     open: true
   }
 }
