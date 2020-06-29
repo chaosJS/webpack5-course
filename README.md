@@ -1,6 +1,6 @@
 ### 最新版 Webpack5
 
-todo: https://www.bilibili.com/video/BV1e7411j7T5?p=21
+todo: https://www.bilibili.com/video/BV1e7411j7T5?p=22
 
 - 提取 css 成为单独文件
 
@@ -37,7 +37,7 @@ todo: https://www.bilibili.com/video/BV1e7411j7T5?p=21
   - 开发环境优化
     1. 打包速度
        1. hmr 只打包变化的模块
-    1. 优化代码调试（sourve map）
+    1. 优化代码调试（source map）:一种源代码到构建后代码的映射的技术，如果构建后的代码出错了，通过映射就可以追踪源代码的错误，在
   - 生产环境优化
     1. 打包速度
     2. 代码运行的性能

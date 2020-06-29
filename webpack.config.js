@@ -184,5 +184,8 @@ module.exports = {
     // hmr
     hot: true,
     open: true
-  }
+  },
+  // 开启source-map ,值有 inline-source-map|hidden-source-map|eval-source-map 了解这几个值的大概意思
+  // react和vue的脚手架的开发环境基本都是用eval-source-map
+  devtool: 'source-map'
 }
