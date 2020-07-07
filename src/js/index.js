@@ -8,6 +8,8 @@ import '../font/iconfont.css';
 
 import print from './print';
 
+import { muti } from './testTreeShaking';
+
 console.log('index.js 被加载了');
 
 print();
@@ -45,6 +47,7 @@ console.log(add(1, 2));
 console.log(minus(2, 1));
 
 console.log(data);
+console.log(muti(2, 3));
 
 if (module.hot) {
   module.hot.accept('./print.js', () => {

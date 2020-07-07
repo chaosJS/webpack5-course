@@ -7,99 +7,103 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 module.exports = {
   entry: './src/js/index.js',
   output: {
-    filename: 'build.js',
+    filename: 'build.[contenthash:10].js',
     // __dirname 当前文件的目录绝对路径
     path: path.resolve(__dirname, 'build')
   },
   module: {
     rules: [
       {
-        test: /\.css$/,
-        use: [
-          // 将js中的css资源（字符串）提取出来，放到style标签中，添加到head中
-          // 'style-loader',
-          // 取代 style-loader,提取css为单独的文件
+        oneOf: [
           {
-            loader: MiniCssExtractPlugin.loader,
+            test: /\.css$/,
+            use: [
+              // 将js中的css资源（字符串）提取出来，放到style标签中，添加到head中
+              // 'style-loader',
+              // 取代 style-loader,提取css为单独的文件
+              {
+                loader: MiniCssExtractPlugin.loader,
+                options: {
+                  // 这里可以指定一个 publicPath
+                  // 默认使用 webpackOptions.output中的publicPath
+                  // publicPath的配置，和plugins中设置的filename和chunkFilename的名字有关
+                  // 如果打包后，background属性中的图片显示不出来，请检查publicPath的配置是否有误
+                  publicPath: '/'
+                  // publicPath: devMode ? './' : '../',   // 根据不同环境指定不同的publicPath
+                  // 仅dev环境启用HMR功能
+                  // hmr: devMode
+                }
+              },
+              // 将css文件转变成commonjs模块加载到js中，样式字符串
+              'css-loader',
+              // css-loader 之前添加postcss-loader
+              {
+                loader: 'postcss-loader',
+                options: {
+                  ident: 'postcss',
+                  plugins: () => [
+                    // 帮助postcss找到package.json中 browserslist 的配置，通过这个配置，加载指定的css兼容性样式
+                    require('postcss-preset-env')()
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            test: /\.less$/,
+            // test: /\.(css|less)$/,
+            use: [
+              {
+                loader: MiniCssExtractPlugin.loader,
+                options: {
+                  // 这里可以指定一个 publicPath
+                  // 默认使用 webpackOptions.output中的publicPath
+                  // publicPath的配置，和plugins中设置的filename和chunkFilename的名字有关
+                  // 如果打包后，background属性中的图片显示不出来，请检查publicPath的配置是否有误
+                  publicPath: '/'
+                  // publicPath: devMode ? './' : '../',   // 根据不同环境指定不同的publicPath
+                  // 仅dev环境启用HMR功能
+                  // hmr: devMode
+                }
+              },
+              'css-loader',
+              //
+              // {
+              //   loader: 'postcss-loader'
+              // },
+              'less-loader'
+            ]
+          },
+          {
+            test: /\.jpeg|jpg|png$/,
+            // install 两个loader 一个是url-loader  一个是file-loader
+            loader: 'url-loader',
             options: {
-              // 这里可以指定一个 publicPath
-              // 默认使用 webpackOptions.output中的publicPath
-              // publicPath的配置，和plugins中设置的filename和chunkFilename的名字有关
-              // 如果打包后，background属性中的图片显示不出来，请检查publicPath的配置是否有误
-              publicPath: '/'
-              // publicPath: devMode ? './' : '../',   // 根据不同环境指定不同的publicPath
-              // 仅dev环境启用HMR功能
-              // hmr: devMode
+              // 图片小于10k用base64
+              limit: 10 * 1024,
+              // url loader 默认使用es6模块，旧版html-loader 引入图片使用commonjs
+              // 报错的话，可以关闭url-loader的es6 模块化
+              // esModule: false
+
+              // 重命名
+              name: '[hash:10].[ext]',
+              outputPath: 'images'
             }
           },
-          // 将css文件转变成commonjs模块加载到js中，样式字符串
-          'css-loader',
-          // css-loader 之前添加postcss-loader
           {
-            loader: 'postcss-loader',
+            // html文件中的img标签路径
+            test: /\.html$/,
+            loader: 'html-loader'
+          },
+          // font loader
+          {
+            test: /\.(woff|svg|eot|ttf)$/,
+            loader: 'url-loader',
             options: {
-              ident: 'postcss',
-              plugins: () => [
-                // 帮助postcss找到package.json中 browserslist 的配置，通过这个配置，加载指定的css兼容性样式
-                require('postcss-preset-env')()
-              ]
+              outputPath: 'fonts'
             }
           }
         ]
-      },
-      {
-        test: /\.less$/,
-        // test: /\.(css|less)$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              // 这里可以指定一个 publicPath
-              // 默认使用 webpackOptions.output中的publicPath
-              // publicPath的配置，和plugins中设置的filename和chunkFilename的名字有关
-              // 如果打包后，background属性中的图片显示不出来，请检查publicPath的配置是否有误
-              publicPath: '/'
-              // publicPath: devMode ? './' : '../',   // 根据不同环境指定不同的publicPath
-              // 仅dev环境启用HMR功能
-              // hmr: devMode
-            }
-          },
-          'css-loader',
-          //
-          // {
-          //   loader: 'postcss-loader'
-          // },
-          'less-loader'
-        ]
-      },
-      {
-        test: /\.jpeg|jpg|png$/,
-        // install 两个loader 一个是url-loader  一个是file-loader
-        loader: 'url-loader',
-        options: {
-          // 图片小于10k用base64
-          limit: 10 * 1024,
-          // url loader 默认使用es6模块，旧版html-loader 引入图片使用commonjs
-          // 报错的话，可以关闭url-loader的es6 模块化
-          // esModule: false
-
-          // 重命名
-          name: '[hash:10].[ext]',
-          outputPath: 'images'
-        }
-      },
-      {
-        // html文件中的img标签路径
-        test: /\.html$/,
-        loader: 'html-loader'
-      },
-      // font loader
-      {
-        test: /\.(woff|svg|eot|ttf)$/,
-        loader: 'url-loader',
-        options: {
-          outputPath: 'fonts'
-        }
       },
       {
         test: /\.js$/,
@@ -165,13 +169,19 @@ module.exports = {
 
     new MiniCssExtractPlugin({
       // 对输出对文件重新命名，默认为main.css
-      filename: 'css/built.css'
+      filename: 'css/built.[contenthash:10].css'
     }),
     new OptimizeCssAssetsPlugin()
   ],
 
   // mode: 'development|production'
-  mode: 'development',
+  mode: 'production',
+  // 优化， code split
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
+  },
 
   // npm i webpack-dev-server
   // 运行webpack-dev-server
