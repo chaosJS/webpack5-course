@@ -63,4 +63,7 @@
   1. 懒加载，同样使用 import 语法 ，会先分割单独的代码，然后再懒加载（资源太大不适合）
   2. 预加载,在 import 语法中添加 webpack 魔法注释 webpackPrefetch:true。 1. 会在使用之前提前加载 2. 等正常并行加载之后，浏览器空闲，再偷偷加载这个 prefetch 的资源 （兼容性有问题）
 
-todo: https://www.bilibili.com/video/BV1e7411j7T5?p=27
+- pwa 技术
+  1. workbox => workbox-webpack-plugin
+
+todo: https://www.bilibili.com/video/BV1e7411j7T5?p=28

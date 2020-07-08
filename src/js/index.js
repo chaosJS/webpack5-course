@@ -54,3 +54,17 @@ if (module.hot) {
     print();
   });
 }
+
+// 注册serviceWorker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/service-worker.js')
+      .then(() => {
+        console.log('serviceworker 注册成功');
+      })
+      .catch(() => {
+        console.log('serviceworker 注册失败');
+      });
+  });
+}

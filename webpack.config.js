@@ -2,6 +2,7 @@ const path = require('path')
 const htmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const workboxWebpackPlugun = require('workbox-webpack-plugin')
 // 切换NODE_ENV 可以看到不同的css兼容效果
 // process.env.NODE_ENV = 'development'
 module.exports = {
@@ -171,7 +172,17 @@ module.exports = {
       // 对输出对文件重新命名，默认为main.css
       filename: 'css/built.[contenthash:10].css'
     }),
-    new OptimizeCssAssetsPlugin()
+    new OptimizeCssAssetsPlugin(),
+    new workboxWebpackPlugun.GenerateSW({
+      // 帮助serviceworker快读启动
+      // 删除旧的serviceworker
+      // 最终生成一个serviceworker的配置文件
+      // 然后在入口文件中做注册serviceworker
+      // 需要在eslint 中配置 支持browser 为true
+      // servicework文件必须运行在服务器上
+      clientsClaim: true,
+      skipWaiting: true
+    })
   ],
 
   // mode: 'development|production'
