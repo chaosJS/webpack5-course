@@ -110,6 +110,10 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: [
+          // 开启多进程打包
+          // 进程启动/进程通信都需要时间
+          // 所以项目体积很大的时候效果很好
+          'thread-loader',
           {
             loader: 'babel-loader',
             options: {

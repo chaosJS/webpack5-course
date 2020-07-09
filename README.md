@@ -65,5 +65,8 @@
 
 - pwa 技术
   1. workbox => workbox-webpack-plugin
+- 多进程打包
+  1. npm i thread-loader -D
+  2. 一般是在 babel-loader 来用
 
-todo: https://www.bilibili.com/video/BV1e7411j7T5?p=28
+todo: https://www.bilibili.com/video/BV1e7411j7T5?p=29
