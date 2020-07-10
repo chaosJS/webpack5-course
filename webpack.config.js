@@ -197,6 +197,12 @@ module.exports = {
       chunks: 'all'
     }
   },
+  // webpack可以不处理应用的某些依赖库，
+  // 使用externals配置后，依旧可以在代码中通过CMD、AMD或者window/global全局的方式访问。
+  externals: {
+    // 例如用cdn或者其他方法引入了jq，就可以配置不打包jq了
+    jquery: 'jQuery'
+  },
 
   // npm i webpack-dev-server
   // 运行webpack-dev-server
