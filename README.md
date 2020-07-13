@@ -70,4 +70,11 @@
   2. 一般是在 babel-loader 来用
 - externals
 
-todo: https://www.bilibili.com/video/BV1e7411j7T5?p=30
+- dll 了解原理即可
+
+  1. [webpack dll 配置，可能已经过时了](https://juejin.im/post/5d8aac8fe51d4578477a6699)
+  2. webpack 5 开箱即用
+
+- [一些容易混淆 webpack 的概念](https://juejin.im/post/5cede821f265da1bbd4b5630)
+
+todo: https://www.bilibili.com/video/BV1e7411j7T5?p=32
