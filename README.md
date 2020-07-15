@@ -77,4 +77,65 @@
 
 - [一些容易混淆 webpack 的概念](https://juejin.im/post/5cede821f265da1bbd4b5630)
 
-todo: https://www.bilibili.com/video/BV1e7411j7T5?p=33 entry
+todo: https://www.bilibili.com/video/BV1e7411j7T5?p=35
+
+### entry 入口的起点
+
+1. 值为 string：单入口， 打包成一个 chunk，输出一个 bundle，此时 chunk 的 name 默认为 main
+2. 值为 array 多入口，所有入口文件只会打包成一个 chunk，输出一个 bundle，这种写法一般用在 HMR 中让 html 热更新生效
+   ```
+   entry:['/index.js','/add.js']
+   // add.js 会打包到第一个的chunk中
+   ```
+3. 值为对象{} ,多入口，有多少个入口文件，就有多少个 chunk，输出多少个 bundle
+   ```
+   entry:{
+     main1:'./index.js',
+     add:'./add.js'
+   }
+   ```
+4. 特殊用法 多文件
+   ```
+   entry:{
+     main:['./index.js','./count.js'],
+     add:'./add.js'
+   }
+   ```
+
+### output
+
+1. filename 指定目录+名称
+   ```
+   filename:'js/[name].js'
+   ```
+2. path 打包输出的所有文件的公共目录
+
+   ```
+    path:resolve(___dirname,'build')
+   ```
+
+3. publicPath 所有资源引入公共路径的前缀 一般用于生产环境
+
+4. chunkFilename 非入口 chunk 的名称
+
+   ```javascript
+   chunkFilename: '[name]_chunk.js'
+   // index.js
+   ...
+   import('./add').then((default:add)=>{
+     console.log(add(2,3))
+   })
+   // 这样import的文件会被打包成一个单独的chunk，这个chunk就叫非入口chunk
+   ```
+
+5. library/libraryTarget 写库或者工具的时候，向外暴露的变量名
+
+   ```js
+   library:'[name]',//暴露为名为 entry 设置的全局变量
+   // libraryTarget 暴露出的库如何兼容使用：
+   libraryTarget:'window',// 浏览器的window变量下
+   libraryTarget:'global', // node中
+   libraryTarget:'commonjs',// commonjs规范
+   libraryTarget:'this',// 通过 this 对象访问
+
+   ```
