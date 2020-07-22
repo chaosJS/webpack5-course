@@ -207,16 +207,37 @@ module.exports = {
   // npm i webpack-dev-server
   // 运行webpack-dev-server
   devServer: {
-    // 只在内存中打包运行
+    // 只在内存中打包运行 对外提供的访问内容的路径
     contentBase: path.resolve(__dirname, 'build'),
     // gzip
     compress: true,
     port: 3000,
     // hmr
     hot: true,
-    open: true
+    open: true,
+    // 不要全屏提示错误
+    overlay: false,
+    proxy: {
+      '/api': {
+        target: 'http://api.testxx.com:3000',
+        pathRewrite: {
+          '^api': ''
+        }
+      }
+    }
   },
   // 开启source-map ,值有 inline-source-map|hidden-source-map|eval-source-map 了解这几个值的大概意思
   // react和vue的脚手架的开发环境基本都是用eval-source-map
-  devtool: 'source-map'
+  devtool: 'source-map',
+
+  resolve: {
+    // 配置别名
+    alias: {
+      $comp: resolve(__dirname, 'src/components')
+    },
+    // 配置省略文件的后缀名 默认的当然是 js/json 推荐写全文件名提高编译效率
+    extentions: ['jsx', 'vue'],
+    // 默认就是node_modules
+    modules: ['node_modules']
+  }
 }

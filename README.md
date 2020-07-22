@@ -77,7 +77,7 @@
 
 - [一些容易混淆 webpack 的概念](https://juejin.im/post/5cede821f265da1bbd4b5630)
 
-todo: https://www.bilibili.com/video/BV1e7411j7T5?p=35
+todo: https://www.bilibili.com/video/BV1e7411j7T5?p=38
 
 ### entry 入口的起点
 
@@ -139,3 +139,20 @@ todo: https://www.bilibili.com/video/BV1e7411j7T5?p=35
    libraryTarget:'this',// 通过 this 对象访问
 
    ```
+
+### module
+
+1. rules 解析文件的 loader
+
+### resolve 不是解析 path 的那个，解析模块的规则
+
+1. alias 别名
+2. extentions 省略文件后缀
+3. modules 告诉 webpack 解析模块时去哪个目录去寻找，默认是 modules:['node_modules']
+
+### devServer
+
+1. contentBase
+2. compress/port/host/open/hot
+3. overlay:false
+4. proxy 重点 解决开发环境的跨域问题
