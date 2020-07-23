@@ -156,3 +156,22 @@ todo: https://www.bilibili.com/video/BV1e7411j7T5?p=38
 2. compress/port/host/open/hot
 3. overlay:false
 4. proxy 重点 解决开发环境的跨域问题
+
+### optimization 优化的配置方案
+
+1. 在生产环境中配置
+
+   ```js
+   splitChunks: {
+     chunks: 'all',
+     // 分割的chunk最小单位
+     miniSize:30*1024,
+     // 最大没有限制
+     maxSize:0,
+     // 要提取的chunk最少被引用一次
+     minChunk:1,
+     // 按需加载并行加载的文件最大数量
+     maxAsyncRequest: 5,
+     // todo
+   }
+   ```
