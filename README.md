@@ -77,8 +77,6 @@
 
 - [一些容易混淆 webpack 的概念](https://juejin.im/post/5cede821f265da1bbd4b5630)
 
-todo: https://www.bilibili.com/video/BV1e7411j7T5?p=38
-
 ### entry 入口的起点
 
 1. 值为 string：单入口， 打包成一个 chunk，输出一个 bundle，此时 chunk 的 name 默认为 main
@@ -172,6 +170,15 @@ todo: https://www.bilibili.com/video/BV1e7411j7T5?p=38
      minChunk:1,
      // 按需加载并行加载的文件最大数量
      maxAsyncRequest: 5,
-     // todo
    }
    ```
+
+### webpack 5 一些新特性
+
+1. 手动配置更加少
+2. 优化缓存方式提高构建性能
+3. 更好的 treeshaking
+4. 优化 chunkId 和 moduleId 的生成方式
+5. Node.js polyfills 自动加载功能被移除
+6. Module Federation 模块联邦：使 JavaScript 应用得以从另一个 JavaScript 应用中动态地加载代码 —— 同时共享依赖
+7. 等等
